@@ -39,7 +39,7 @@ public class TemporaryExecutionListener {
      * @param executionListener The listener to add.
      */
     public static void addExecutionListener(Gradle gradle, ExecutionListener executionListener) {
-        gradle.addBuildListener(new DelegatingBuildListener(gradle, executionListener));
+        gradle.addListener(new DelegatingBuildListener(executionListener));
     }
 
     /**
@@ -54,19 +54,18 @@ public class TemporaryExecutionListener {
         private ExecutionListener executionListener;
         private StringBuffer allOutputText = new StringBuffer(); //this is potentially threaded, so use StringBuffer instead of StringBuidler
 
-        private DelegatingBuildListener(Gradle gradle, ExecutionListener executionListener) {
+        private DelegatingBuildListener(ExecutionListener executionListener) {
             this.executionListener = executionListener;
-
-            DefaultLoggingConfigurer loggingConfigurer = new DefaultLoggingConfigurer();
-            loggingConfigurer.configure(gradle.getStartParameter().getLogLevel());
-            loggingConfigurer.addStandardOutputListener(this);
-            loggingConfigurer.addStandardErrorListener(this);
         }
 
         public synchronized void onOutput(CharSequence output) {
             String text = output.toString();
             allOutputText.append(text);
             executionListener.reportLiveOutput(text);
+        }
+
+        public void onError(CharSequence output) {
+            onOutput(output);
         }
 
         /**

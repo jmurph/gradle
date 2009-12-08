@@ -34,8 +34,9 @@ public class TestListenerFormatter implements JUnitResultFormatter {
 
     public TestListenerFormatter() throws IOException {
         int port = Integer.parseInt(System.getProperty(PORT_VMARG, "0"));
-        if (port != 0)
+        if (port != 0) {
             remoteSender = new RemoteSender<TestListener>(TestListener.class, port).getSource();
+        }
     }
 
     public TestListenerFormatter(TestListener listener) throws IOException {
@@ -115,23 +116,28 @@ public class TestListenerFormatter implements JUnitResultFormatter {
         }
 
         public TestListener.ResultType getResultType() {
-            if (error != null)
+            if (error != null) {
                 return TestListener.ResultType.ERROR;
-            else if (failure != null)
+            }
+            else if (failure != null) {
                 return TestListener.ResultType.FAILURE;
-            else
+            }
+            else {
                 return TestListener.ResultType.SUCCESS;
+            }
         }
 
         public Throwable getError() {
-            if (error == null)
+            if (error == null) {
                 throw new IllegalStateException("No error to return");
+            }
             return error;
         }
 
         public Throwable getFailure() {
-            if (failure == null)
+            if (failure == null) {
                 throw new IllegalStateException("No failure to return");
+            }
             return failure;
         }
     }

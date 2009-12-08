@@ -39,8 +39,9 @@ public class TestNGListenerAdapter implements ITestListener {
 
     public TestNGListenerAdapter() throws IOException {
         int port = Integer.parseInt(System.getProperty(PORT_VMARG, "0"));
-        if (port != 0)
+        if (port != 0) {
             remoteSender = new RemoteSender<TestListener>(TestListener.class, port).getSource();
+        }
     }
 
     public TestNGListenerAdapter(TestListener listener) throws IOException {
@@ -80,8 +81,7 @@ public class TestNGListenerAdapter implements ITestListener {
         onTestFinished(iTestResult);
     }
 
-    private static class MySuite implements TestListener.Suite
-    {
+    private static class MySuite implements TestListener.Suite {
         private String name;
 
         public MySuite(ITestContext iTestContext) {
@@ -93,8 +93,7 @@ public class TestNGListenerAdapter implements ITestListener {
         }
     }
 
-    private static class MyTest implements TestListener.Test
-    {
+    private static class MyTest implements TestListener.Test {
         private String name;
 
         public MyTest(ITestResult iTestResult) {
@@ -106,14 +105,12 @@ public class TestNGListenerAdapter implements ITestListener {
         }
     }
 
-    private static class MyResult implements TestListener.Result
-    {
+    private static class MyResult implements TestListener.Result {
         private TestListener.ResultType result;
         private Throwable error;
 
         private MyResult(ITestResult iTestResult) {
-            switch(iTestResult.getStatus())
-            {
+            switch(iTestResult.getStatus()) {
                 case ITestResult.SUCCESS:
                 case ITestResult.SUCCESS_PERCENTAGE_FAILURE:
                     result = TestListener.ResultType.SUCCESS;
@@ -136,8 +133,9 @@ public class TestNGListenerAdapter implements ITestListener {
         }
 
         public Throwable getError() {
-            if (error == null)
+            if (error == null) {
                 throw new IllegalStateException("No error to return");
+            }
             return error;
         }
 

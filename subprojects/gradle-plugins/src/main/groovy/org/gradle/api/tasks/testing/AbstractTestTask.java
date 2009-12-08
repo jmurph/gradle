@@ -31,6 +31,8 @@ import org.gradle.api.testing.fabric.TestFrameworkInstance;
 import org.gradle.external.junit.JUnitTestFramework;
 import org.gradle.external.testng.TestNGTestFramework;
 import org.gradle.util.ConfigureUtil;
+import org.gradle.listener.ListenerManager;
+import org.gradle.listener.ListenerBroadcast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -66,6 +68,16 @@ public abstract class AbstractTestTask extends ConventionTask implements Pattern
     protected boolean testReport = true;
 
     protected boolean scanForTestClasses = true;
+
+    private ListenerBroadcast<TestListener> testListenerBroadcaster;
+
+    protected AbstractTestTask() {
+        testListenerBroadcaster = getServices().get(ListenerManager.class).createAnonymousBroadcaster(TestListener.class);
+    }
+
+    public ListenerBroadcast<TestListener> getTestListenerBroadcaster() {
+        return testListenerBroadcaster;
+    }
 
     @TaskAction
     protected abstract void executeTests();

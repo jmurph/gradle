@@ -177,9 +177,8 @@ public class TestListenerFormatterTest {
                 case SUCCESS:
                     return result.getResultType() == type;
                 case ERROR:
-                    return result.getResultType() == type && result.getError() == throwable;
                 case FAILURE:
-                    return result.getResultType() == type && result.getFailure() == throwable;
+                    return result.getResultType() == type && result.getException() == throwable;
                 default:
                     return false;
             }

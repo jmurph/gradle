@@ -127,18 +127,14 @@ public class TestListenerFormatter implements JUnitResultFormatter {
             }
         }
 
-        public Throwable getError() {
-            if (error == null) {
-                throw new IllegalStateException("No error to return");
+        public Throwable getException() {
+            if (error != null) {
+                return error;
+            } else if (failure != null) {
+                return failure;
             }
-            return error;
-        }
 
-        public Throwable getFailure() {
-            if (failure == null) {
-                throw new IllegalStateException("No failure to return");
-            }
-            return failure;
+            throw new IllegalStateException("No exception to return");
         }
     }
 }

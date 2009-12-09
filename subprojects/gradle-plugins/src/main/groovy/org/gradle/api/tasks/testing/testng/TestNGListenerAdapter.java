@@ -132,15 +132,12 @@ public class TestNGListenerAdapter implements ITestListener {
             return result;
         }
 
-        public Throwable getError() {
-            if (error == null) {
-                throw new IllegalStateException("No error to return");
+        public Throwable getException() {
+            if (error != null) {
+                return error;
             }
-            return error;
-        }
 
-        public Throwable getFailure() {
-            return null;
+            throw new IllegalStateException("No exception to return");
         }
     }
 }*/
